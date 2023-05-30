@@ -42,8 +42,8 @@ $idp=$_SESSION['update'];
        Price : <input type="text" name="price" value='<?php echo $row['price'] ?>'/>
        <br>
        Quantiny  : <input type="text" min="1" name="quantity"  value=' <?php echo $row['quantity']?>''><br>
-        <button type="submit" name="update"  class="btn btn-warning" > Update product </button><br>
-    <a href="Shop.php"> back to  shop</a>
+        <button type="submit" name="update"  class="btn btn-dark" > Update product </button><br>
+    <a href="updateOrdelete.php"> back to  shop</a>
     </form> 
     </div>
 </center>

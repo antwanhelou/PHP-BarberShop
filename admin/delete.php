@@ -38,8 +38,8 @@ $idp=$_SESSION['delete'];
     
       
         <button type="submit" name="yes"  class="btn btn-danger" > YES </button>
-        <button type="submit" name="no"  class="btn btn-warning" > no</button>
-    <a href="Shop.php"> back to  shop</a>
+        <button type="submit" name="no"  class="btn btn-dark" > no</button>
+    <a href="updateOrdelete.php"> back to  shop</a>
     </form> 
     </div>
 </center>
