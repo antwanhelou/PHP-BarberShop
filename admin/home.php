@@ -55,12 +55,12 @@
 <?php
 if(isset($_POST['feedback'])){
     echo '	
-    <script>window.open("feedback.php")</script>;' ;
+    <script>window.location.replace("feedback.php")</script>;' ;
    
 }
 if(isset($_POST['soonend'])){
      echo '	
-    <script>window.open("reports.php")</script>;' ;
+    <script>window.location.replace("reports.php")</script>;' ;
 }
 ?>
 </body>

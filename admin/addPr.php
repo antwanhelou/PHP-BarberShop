@@ -8,13 +8,21 @@ include 'index.php';
  ?>
   <style>
         
-        .main{
-            width:30%;
-            padding:20px;
-            box-shadow: 1px 1px 10px silver;
-            margin-top:50px;
-         
-        }
+        .main {
+        width: 30%;
+        padding: 20px;
+        box-shadow: 1px 1px 10px silver;
+        margin-top: 50px;
+        background-color: #333333; /* Set dark background color */
+        color: #ffffff; /* Set white text color */
+    }
+
+    .main input[type="text"],
+    .main select,
+    .main input[type="file"] {
+        background-color: #ffffff; /* Set white background color for input fields */
+        color: #333333; /* Set dark text color for input fields */
+    }
 
         </style>
         <center>
@@ -46,7 +54,7 @@ include 'index.php';
 </div>
  <br>
  <div class="form-group">
-    <input type="submit" name="addp" class="btn btn-warning rounded-pill" value="add product"/>
+    <input type="submit" name="addp" class="btn btn-dark" value="add product"/>
 
 </div>
 </div>
