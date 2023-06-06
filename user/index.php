@@ -12,11 +12,7 @@ session_start();
     
     <title>shop</title>
     <!-- Add the required MDB CSS and JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.12.0/mdb.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
-<!-- Add Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
  .nav {
             overflow: hidden;
@@ -67,16 +63,16 @@ $data1 = mysqli_fetch_assoc($resssult);
 $name = mysqli_query($con, "SELECT name FROM Userss WHERE ID_u=$iduser");
 $rows = mysqli_fetch_assoc($name);
 
-$photo = mysqli_query($con, "SELECT photo FROM Userss WHERE ID_u=$iduser");
-$rows5 = mysqli_fetch_assoc($photo);
-$imagePath = $details['photo'];
+ $photo = mysqli_query($con, "SELECT photo FROM Userss WHERE ID_u='$iduser'");
+ $rows5 = mysqli_fetch_assoc($photo);
+ $imagePath = $details['photo'];
 echo '
 
-<!-- Navbar -->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Container wrapper -->
+ 
   <div class="container-fluid">
-    <!-- Toggle button -->
+  
     <button
       class="navbar-toggler"
       type="button"
@@ -89,13 +85,13 @@ echo '
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Collapsible wrapper -->
+    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Navbar brand -->
+    
       <a class="navbar-brand mt-2 mt-lg-0" href="#">
        
       </a>
-      <!-- Left links -->
+     
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="Home.php">Welcome ' . $rows['name'] . '</a>
@@ -108,15 +104,14 @@ echo '
      
         
       </ul>
-      <!-- Left links -->
+    
     </div>
-    <!-- Collapsible wrapper -->
+ 
 
-    <!-- Right elements -->
     <div class="d-flex align-items-center">
     <div class="container-fluid">
     <ul class="navbar-nav">
-      <!-- Avatar -->
+  
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle d-flex align-items-center"
@@ -158,15 +153,13 @@ echo '
       </li>
     </ul>
   </div>
-      <!-- Icon -->
+  
       <a class="link-secondary me-3 text-reset me-3  "  href="cart.php">
       
         <i class="fas fa-shopping-cart text-white"></i>
         <span class="badge rounded-pill badge-notification bg-danger">' . $sumincart . '</span>  </a>
 
-        <!-- Notifications -->
-      
-        <!-- Avatar -->
+   
         <div class="dropdown">
           <a
             class="dropdown-toggle d-flex align-items-center hidden-arrow"
@@ -174,14 +167,12 @@ echo '
             id="navbarDropdownMenuAvatar"
             role="button"
             data-mdb-toggle="dropdown"
-            aria-expanded="false"
-          >
+            aria-expanded="false" >
             
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdownMenuAvatar"
-          >
+            aria-labelledby="navbarDropdownMenuAvatar" >
             <li>
               <a class="dropdown-item" href="profile.php">My profile</a>
             </li>
@@ -194,12 +185,12 @@ echo '
           </ul>
         </div>
       </div>
-      <!-- Right elements -->
+    
       </div>
-      <!-- Container wrapper -->
+    
     </nav>
-    <!-- Navbar -->
-    '
+   
+    ';
     ?>
     </body>
     </html>      

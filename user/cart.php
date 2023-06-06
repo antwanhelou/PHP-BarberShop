@@ -15,8 +15,6 @@ $result = mysqli_query($con, "SELECT addcart.*, products.image FROM addcart INNE
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Cart</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
     <style>
         .total-container {
             padding: 10px;
@@ -131,7 +129,5 @@ $result = mysqli_query($con, "SELECT addcart.*, products.image FROM addcart INNE
 <div class="total-container">
     <p>Total: $<?php echo $total; ?></p>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>            

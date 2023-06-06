@@ -24,7 +24,7 @@
 $hostname='localhost';
 $username='root';
 $password='';
-$database='Barbershopp';
+$database='barshop';
 error_reporting(0);
 $con=mysqli_connect($hostname,$username,$password,$database);
 

@@ -11,12 +11,23 @@
 </head>
 <body>
   <?php include '../DBconnect.php';
+  include '../apointments.php';
+  $date2 = date('Y-m-d');
+$time = date('H');
+  $isActive = activeApoinments($con, $date2, $time);
+
+ // $change=$isActive;
+ // var_dump($change); 
+
     session_start();
 
     error_reporting(0);
 
     session_start();
-
+    $apointments="SELECT * FROM  history_of_queues";
+    $result=mysqli_query($con,$apointments);
+    $NumOfApointments=mysqli_num_rows($result);
+   
     if(!isset($_SESSION['email'])){
         header('location:../login.php');
     }
@@ -56,6 +67,17 @@
           <li class="nav-item">
             <a class="nav-link" href="updateOrdelete.php">
               <i class="fas fa-edit"></i> Update/Delete Products
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="apointments.php">
+              <i> 
+                <?php  if($change==false){ ?>
+                <img src="../images/off2.gif" height="25px" width="25px" >
+            <?php  }
+            else{
+            ?><img src="../images/on.gif" height="25px" width="25px" ><?php  }?>
+            </i> Active apointments
             </a>
           </li>
           <li class="nav-item">

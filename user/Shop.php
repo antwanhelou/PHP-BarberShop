@@ -19,8 +19,6 @@ $totalPages = ceil($totalProducts / $productsPerPage);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
  
  
   
@@ -121,7 +119,6 @@ $_SESSION['cn']=$data1['total'];
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const cartIcons = document.querySelectorAll('.add-to-cart');

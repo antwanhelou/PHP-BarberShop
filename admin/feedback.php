@@ -2,12 +2,18 @@
 
 <?php include 'index.php';
   include '../DBconnect.php';
+  include '../funcs/funcs.php';
   $show="SELECT * FROM contactus ";
   $result=mysqli_query($con,$show);
   ?>
  <CENTER> <br> <h1><span class="border border-secondary rounded-sm bg-warning ">
    Welcome to all feedbacks </span> </h1>
 </CENTER>
+<?php 
+if (mysqli_num_rows($result)==0){
+ echo '<h2 style="text-align :center ;  padding-top: 25px;" >   No feedbacks </h2>';
+} else{
+?>
   <form  method="POST">
    <div class="container py-5">
   <div class="row mt-4">
@@ -27,7 +33,7 @@
     <p class="card-text">  Name : '. $row['name'] .'</p>
     <p class="card-text">  Email : '. $row['email'] .'</p>
      <p class="card-text">  Message : '. $row['message'].' </p>
-
+    
     </div>
     </div>
   </div>
@@ -37,8 +43,9 @@
 ';
 
  
-  
+  }
   } 
+   
   ?>
   </form>
   <body>
