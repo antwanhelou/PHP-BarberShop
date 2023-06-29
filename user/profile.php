@@ -41,7 +41,7 @@ $details = mysqli_fetch_array($result);
                 <p>Email: <?php echo $details['email']; ?></p>
                 <p>coins: <?php echo $details['coins']; ?></p>
                 <div class="text-center">
-                    <button class="btn btn-white bg-dark text-white" type="submit" name="update" value="<?php echo $row['ID_u']; ?>">Update Your Details</button>
+                    <button class="btn btn-white" type="submit" name="update" value="<?php echo $row['ID_u']; ?>">Update Your Details</button>
                 </div>
             </form>
         </div>

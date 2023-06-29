@@ -1,7 +1,5 @@
 <?php
-  // ini_set('display_errors', 1);
-  // ini_set('display_startup_errors', 1);
-  // error_reporting(E_ALL);
+
   include '../DBconnect.php'; 
   include 'index.php';
   include './Login.php';
@@ -14,31 +12,6 @@
   $branch='';
   $id_branch='';
   $iduser = $_SESSION['email'];
-?>
-<form    method="POST" >
-<select name="choose_area" style="width:200px;"id="area">
-<?php
-  $branch="SELECT * FROM branchs";
-  $res_branch=mysqli_query($con,$branch);
-while($row=mysqli_fetch_assoc($res_branch))
-{
-  ?>
-    <option value=" <?php echo ($row['city'])  ?>  "><?php   echo  $row['city']  ?></option>
-  <?php }?>
-
-</select>
-<input type="submit" value="choose area" name="area"  />
-<?php  
-if (isset($_POST['choose_area'])) {
-  $choosed = true;
-  $branch =  trim( $_POST['choose_area']);
-  $b = "SELECT ID_branch FROM branchs WHERE city='$branch'";
-  $res_b = mysqli_query($con, $b);
-  $row = mysqli_fetch_assoc($res_b);
-  $id_branch = $row['ID_branch'];
- 
- // echo "Selected Branch: " '. $branch .'" <br>";
-}
   function send_confirmation_email($to, $date, $time, $barber_name) {
     $subject = "Reservation Confirmation";
     $message = "Hello,\n\nYour reservation has been confirmed!\n\nDate: {$date}\nTime: {$time}\nBarber: {$barber_name}\n\nThank you for choosing our services!";
@@ -50,6 +23,34 @@ if (isset($_POST['choose_area'])) {
       echo "Failed to send the confirmation email.";
     }
   }
+?>
+<style></style>
+<form style="margin: 15px;"   method="POST" >
+<select  name="choose_area" class="select"style="width:200px;"id="area">
+<?php
+  $branch="SELECT * FROM branchs  ";
+  $res_branch=mysqli_query($con,$branch);
+while($row=mysqli_fetch_assoc($res_branch))
+{
+  ?>
+    <option value=" <?php echo ($row['city'])  ?>  "><?php   echo  $row['city']  ?></option>
+  <?php }?>
+
+</select>
+<input  type="submit" class="btn btn-dark"  value="choose area" name="area"  />
+<?php  
+if (isset($_POST['choose_area'])) {
+  $choosed = true;
+  $branch =  trim( $_POST['choose_area']);
+  $b = "SELECT ID_branch FROM branchs WHERE city='$branch'";
+  $res_b = mysqli_query($con, $b);
+  $row = mysqli_fetch_assoc($res_b);
+  //$id_branch = $row['ID_branch'];
+  $_SESSION['id_branch']=$row['ID_branch'];
+ 
+ // echo "Selected Branch: " '. $branch .'" <br>";
+}
+  
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
@@ -74,25 +75,93 @@ if (isset($_POST['choose_area'])) {
       color: #ccc;
       background-color: #343a40;
     }
+    .select-wrapper {
+    position: relative;
+    display: inline-block;
+    user-select: none;
+  }
+
+  .select {
+    display: inline-block;
+    padding: 10px;
+    background-color: #f1f1f1;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .select select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .select::after {
+    content: "\f078";
+    font-family: "FontAwesome";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .select.open::after {
+    content: "\f077";
+  }
+
+  .select-items {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    overflow-y: auto;
+    max-height: 200px;
+  }
+
+  .select-items div {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .select-items div:hover {
+    background-color: #f1f1f1;
+  }
     
    
   </style>
+  
 <form    method="POST" >
   <?php if($choosed==true){ ?>
   <select name="barbers" class="select" id="barbers" >
     <?php  
       $area_selected= trim( $_POST['choose_area']);
-      $barbers ="SELECT * FROM Userss WHERE ROLE ='WORKER' ";
+      $id_branch=$_SESSION['id_branch'];
+      $barbers ="SELECT * FROM Userss WHERE ID_branch ='$id_branch' ";
       $res_barbers=mysqli_query($con,$barbers);
       while($row=mysqli_fetch_assoc($res_barbers)){
         
       ?>
-        <option value=" <?php echo trim($row['ID_u'])  ?>  "><?php   echo  $row['name']  ?></option>
+        <option  value=" <?php echo trim($row['ID_u'])  ?>  "><?php   echo  $row['name']  ?></option>
       <?php 
       
     }
       ?>
-  <input type="submit"  data-mdb-ripple-color="dark" value="Select barber" name="select"  />
+  <input type="submit" class="btn btn-dark" data-mdb-ripple-color="dark" value="Select barber" name="select"  />
     <?php   }
       if(isset($_POST['select'])){      
         if(!empty($_POST['barbers'])) {

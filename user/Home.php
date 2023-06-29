@@ -44,7 +44,7 @@
                 <h5 class="card-title">Welcome To Our HairShop</h5>
                 <p class="card-text">You can here find all the hair equipments</p>
                 <p class="card-text">
-                <a href="shop.php" class="btn btn-dark">
+                <a href="shop.php" class="btn btn-white">
             <i class="fas fa-shopping-cart"></i> Shop Now!
         </a>
               
@@ -63,7 +63,7 @@
                             <i class="fas fa-envelope"></i> Contact us!
                         </button>
                     </p> -->
-                    <a href="contactus.php" class="btn btn-dark">
+                    <a href="contactus.php" class="btn btn-white">
             <i class="fas fa-envelope"></i> Contact us!
         </a>
                 </a>
