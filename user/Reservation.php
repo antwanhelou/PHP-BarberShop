@@ -186,7 +186,7 @@ if (isset($_POST['choose_area'])) {
     <td>  <td>
     <tr>
       <?php 
-        $date = date('Y-m-d'); //today date
+        $date = date('Y-m-d');
         $weekOfdays = array();
         for($i =1; $i <= 7; $i++){
           $date = date('Y-m-d', strtotime('+1 day', strtotime($date)));
@@ -293,15 +293,10 @@ if (isset($_POST['choose_area'])) {
             $count = $check_row['count'];
 
             if ($count > 0) {
-                echo '<h6 color="black">Sorry, this time slot is already taken.';
+                echo 'Sorry, this time slot is already taken.';
             } else {
-              session_start();
-              $_SESSION['customer']=$_SESSION['ID_u'];
-             $_SESSION['time']=$_POST['times'];
-             $_SESSION['date']=$_POST['date1'];
-                $_SESSION['barbers']=$_POST['barbers'];
-                // $add_query = "INSERT INTO history_of_queues (time, id_user, id_userW, date) VALUES ('$time', '$customer', '$barber', '$date_sel')";
-                // $res = mysqli_query($con, $add_query);
+                $add_query = "INSERT INTO history_of_queues (time, id_user, id_userW, date) VALUES ('$time', '$customer', '$barber', '$date_sel')";
+                $res = mysqli_query($con, $add_query);
 
                 if ($res) {
                     // Get the barber's name
@@ -310,13 +305,11 @@ if (isset($_POST['choose_area'])) {
                     $barber_result = mysqli_query($con, $barber_query);
                     $barber_row = mysqli_fetch_assoc($barber_result);
                     $barber_name = $barber_row["name"];
-                  $_SESSION['barber_name']=$barber_name;
-                  echo '<script>window.location.replace("payforapointment.php");</script>';
 
                     // Assuming $iduser contains the user's email address.
                     $useremail = $iduser;
-                   // send_confirmation_email($useremail, $date_sel, $time, $barber_name);
-                  //  echo '<script>window.location.replace("appointments.php");</script>';
+                    send_confirmation_email($useremail, $date_sel, $time, $barber_name);
+                    echo '<script>window.location.replace("appointments.php");</script>';
                 } else {
                     echo 'Failed to insert the appointment.';
                 }

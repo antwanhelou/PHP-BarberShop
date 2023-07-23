@@ -139,22 +139,6 @@ $_SESSION['cn']=$data1['total'];
       });
     });
   });
-
-  function showToast(message) {
-    const toastElement = document.createElement('div');
-    toastElement.classList.add('toast');
-    toastElement.textContent = message;
-    document.body.appendChild(toastElement);
-
-    const toast = new bootstrap.Toast(toastElement, {animation: true, delay: 3000});
-    toast.show();
-
-    toastElement.addEventListener('hidden.bs.toast', () => {
-      toast.dispose();
-      toastElement.remove();
-    });
-  }
-
   function addToCart(productId) {
     $.ajax({
       url: "val.php",
@@ -166,22 +150,9 @@ $_SESSION['cn']=$data1['total'];
       success: function(response) {
         location.reload('shop.php');
         const jsonResponse = JSON.parse(response);
-        if (jsonResponse.status === "success") {
-       
-          showToast("Product added to cart");
-      
-        } else {
-    
-          showToast(jsonResponse.message);
-        }
       },
-      error: function() {
-        showToast("Error: Could not add product to cart");
-      }
     });
-    
   }
-
 </script>
 
 </body>
