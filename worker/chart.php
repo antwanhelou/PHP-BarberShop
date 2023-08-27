@@ -1,21 +1,18 @@
 <?php
 include '../DBconnect.php';
 include 'index.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
+
+// Query to count appointments grouped by day of the week
 $query = "SELECT DAYNAME(STR_TO_DATE(date, '%Y-%m-%d')) as day, COUNT(ID_q) as count
           FROM history_of_queues 
           GROUP BY DAY(STR_TO_DATE(date, '%Y-%m-%d'))";
 
 $result = mysqli_query($con, $query);
 
-if (!$result) {
-    echo "Query error: " . mysqli_error($con);
-    exit;
-}
-
+// Create an associative array to store appointment counts for each day
 $counts = array('Sunday' => 0, 'Monday' => 0, 'Tuesday' => 0, 'Wednesday' => 0, 'Thursday' => 0, 'Friday' => 0, 'Saturday' => 0);
+// Fetch and store the appointment counts in the associative array
 while($row = mysqli_fetch_assoc($result)) {
     $counts[$row['day']] = $row['count'];
 }
@@ -28,8 +25,8 @@ while($row = mysqli_fetch_assoc($result)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointments Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+   
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css" />

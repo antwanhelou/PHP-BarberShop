@@ -4,6 +4,7 @@
   include 'index.php';
   include './Login.php';
   session_start();
+  // Query to fetch all records from the "history_of_queues" table
   $customer= $_SESSION['ID_u'];
   $sql="SELECT * FROM history_of_queues";
   $r=mysqli_query($con,$sql);
@@ -12,6 +13,8 @@
   $branch='';
   $id_branch='';
   $iduser = $_SESSION['email'];
+
+  // Function to send appointment confirmation email
   function send_confirmation_email($to, $date, $time, $barber_name) {
     $subject = "Reservation Confirmation";
     $message = "Hello,\n\nYour reservation has been confirmed!\n\nDate: {$date}\nTime: {$time}\nBarber: {$barber_name}\n\nThank you for choosing our services!";
@@ -24,8 +27,9 @@
     }
   }
 ?>
-<style></style>
+
 <form style="margin: 15px;"   method="POST" >
+  <!-- Dropdown to select the branch/area -->
 <select  name="choose_area" class="select"style="width:200px;"id="area">
 <?php
   $branch="SELECT * FROM branchs  ";
@@ -146,21 +150,34 @@ if (isset($_POST['choose_area'])) {
   </style>
   
 <form    method="POST" >
-  <?php if($choosed==true){ ?>
-  <select name="barbers" class="select" id="barbers" >
-    <?php  
-      $area_selected= trim( $_POST['choose_area']);
-      $id_branch=$_SESSION['id_branch'];
-      $barbers ="SELECT * FROM Userss WHERE ID_branch ='$id_branch' ";
-      $res_barbers=mysqli_query($con,$barbers);
-      while($row=mysqli_fetch_assoc($res_barbers)){
-        
-      ?>
-        <option  value=" <?php echo trim($row['ID_u'])  ?>  "><?php   echo  $row['name']  ?></option>
-      <?php 
+<?php if ($choosed == true) { ?>
+  <!-- Display a select dropdown for barbers if the $choosed variable is true -->
+  <select name="barbers" class="select" id="barbers">
+    <?php
+      // Retrieve the chosen area value from the POST data
+      $area_selected = trim($_POST['choose_area']);
       
-    }
-      ?>
+      // Retrieve the branch ID from the session
+      $id_branch = $_SESSION['id_branch'];
+      
+      // Query to fetch all barbers from the Userss table who belong to the selected branch
+      $barbers = "SELECT * FROM Userss WHERE ID_branch = '$id_branch'";
+      
+      // Execute the query to get the list of barbers
+      $res_barbers = mysqli_query($con, $barbers);
+      
+      // Loop through the query result to populate the select dropdown options
+      while ($row = mysqli_fetch_assoc($res_barbers)) {
+    ?>
+      <!-- Generate an option for each barber with their ID as the value and their name as the displayed text -->
+      <option value="<?php echo trim($row['ID_u']) ?>"><?php echo $row['name'] ?></option>
+    <?php
+      }
+    ?>
+  </select>
+
+
+      
   <input type="submit" class="btn btn-dark" data-mdb-ripple-color="dark" value="Select barber" name="select"  />
     <?php   }
       if(isset($_POST['select'])){      
@@ -180,104 +197,119 @@ if (isset($_POST['choose_area'])) {
 }
   </script>
  
-  <form  method="POST" >
+ <form method="POST">
   <table class="table">
     <thead class="table-dark">
-    <td>  <td>
+    <td><td>
     <tr>
-      <?php 
-        $date = date('Y-m-d');
+      <?php
+        // Generate an array of the next 7 days starting from today
+        $date = date('Y-m-d'); // Today's date
         $weekOfdays = array();
-        for($i =1; $i <= 7; $i++){
+        for ($i = 1; $i <= 7; $i++) {
           $date = date('Y-m-d', strtotime('+1 day', strtotime($date)));
-          $dt= date('Y-m-d', strtotime($date));
-          array_push($weekOfdays,$dt);
+          $dt = date('Y-m-d', strtotime($date));
+          array_push($weekOfdays, $dt);
         }
-       
-        $_SESSION['worker']=$_POST['barbers'];
-        $selected_barber=$_SESSION['worker'];
+
+        // Retrieve the selected barber from the form submission
+        $_SESSION['worker'] = $_POST['barbers'];
+        $selected_barber = $_SESSION['worker'];
+
+        // Query to fetch existing appointments for the selected barber
         $date2 = "SELECT * FROM history_of_queues  WHERE id_userW=$selected_barber ";
         $res = mysqli_query($con, $date2);
-        while($row=mysqli_fetch_assoc($res)){
-          $arr=array();
-          $arr['date']=  $row['date'];
-          $arr['time']=$row['time'];
-          $queues[]=$arr;
+
+        // Store the existing appointments in an array
+        $queues = array();
+        while ($row = mysqli_fetch_assoc($res)) {
+          $arr = array();
+          $arr['date'] = $row['date'];
+          $arr['time'] = $row['time'];
+          $queues[] = $arr;
         }
-        $arr2=array();
-        for($i=0;$i<sizeof($weekOfdays);$i++){
-          for($j=11;$j<23;$j++){
-            $arr2=array();
-            $arr2['date']=$weekOfdays[$i];
-            $arr2['time']=$j;
-            $checks[]=$arr2;
+
+        // Generate an array of date-time pairs for all possible appointments in the next 7 days
+        $checks = array();
+        $arr2 = array();
+        for ($i = 0; $i < sizeof($weekOfdays); $i++) {
+          for ($j = 11; $j < 23; $j++) {
+            $arr2 = array();
+            $arr2['date'] = $weekOfdays[$i];
+            $arr2['time'] = $j;
+            $checks[] = $arr2;
           }
         }
-    
-       for($i=0;$i<7;$i++){
-        if (isset($queues)) {
-          for($j=0;$j<sizeof($checks);$j++){
-            if($checks[$j]['time']==$queues[$i]['time'] && $checks[$j]['date']==$queues[$i]['date']  ){
-              
-              unset($checks[$j]['date']);
-              unset($checks[$j]['time']);
-            }     
+
+        // Filter out the booked appointments from the list of possible appointments
+        for ($i = 0; $i < 7; $i++) {
+          if (isset($queues)) {
+            for ($j = 0; $j < sizeof($checks); $j++) {
+              if ($checks[$j]['time'] == $queues[$i]['time'] && $checks[$j]['date'] == $queues[$i]['date']) {
+                unset($checks[$j]['date']);
+                unset($checks[$j]['time']);
+              }
+            }
           }
         }
-      }
       ?>
     </tr>
     <div class="container mt-5">
-    <div class="card-group">  
-      <?php 
-          
-      $apo = array_filter($checks);
-    
-      for($i=0;$i<7;$i++){  
-      ?>
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              <input type="radio" name="date1" value="<?php echo ($weekOfdays[$i])?>" "/>   
-              <p id="<?php echo $weekOfdays[$i]; ?>" name="dates" id="<?php $weekOfdays[$i]; ?> " required >
-                <?php  echo ' ', $weekOfdays[$i];  ?>
-              </p>
-            </h5>
-            <p class="card-text">  
-              <?php 
-                $c=0;
-                for($j=0;$j<sizeof($apo)+$num;$j++){
-                  if($apo[$j]['date']===$weekOfdays[$i]  ){   
-                      echo '  <input type="radio" name="times" id="times"  value="'.$apo[$j]['time'].'" '    .
-                      $apo[$j]["time"].'"   >',' ',
-                      $apo[$j]['time'] ,'<br>'; 
+      <div class="card-group">
+        <?php
+          // Remove any empty elements from the $checks array
+          $apo = array_filter($checks);
+
+          // Loop through each day in the next 7 days
+          for ($i = 0; $i < 7; $i++) {
+        ?>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <!-- Radio button to select the appointment date -->
+                <input type="radio" name="date1" value="<?php echo ($weekOfdays[$i])?>" required/>
+                <p id="<?php echo $weekOfdays[$i]; ?>" name="dates" id="<?php $weekOfdays[$i]; ?> " required>
+                  <?php echo ' ', $weekOfdays[$i]; ?>
+                </p>
+              </h5>
+              <p class="card-text">
+                <?php
+                  // Display available time slots for the selected day
+                  $c = 0;
+                  for ($j = 0; $j < sizeof($apo) + $num; $j++) {
+                    if ($apo[$j]['date'] === $weekOfdays[$i]) {
+                      echo '<input type="radio" name="times" id="times" value="' . $apo[$j]['time'] . '" ' . $apo[$j]["time"] . '" >',
+                      ' ',
+                      $apo[$j]['time'], '<br>';
+                    }
                   }
-                }  
-              ?> 
-            </p>
+                ?>
+              </p>
+            </div>
           </div>
-        </div>
-      <?php 
-      }
-      ?> 
-    </div>  
-    <center>
-      <input type="reset"  class="btn btn-light" data-mdb-ripple-color="dark"value="Clear ">
-      <input type="submit"  class="btn btn-light" data-mdb-ripple-color="dark" value="Add the apointment" name="addto"  />
-     </center>
+        <?php
+          }
+        ?>
+      </div>
+      <center>
+        <!-- Reset and submit buttons for the form -->
+        <input type="reset" class="btn btn-light" data-mdb-ripple-color="dark" value="Clear ">
+        <input type="submit" class="btn btn-light" data-mdb-ripple-color="dark" value="Add the appointment" name="addto" />
+      </center>
+    </div>
   </form>
   <?php
-  
-  $hasReloaded = false;
-  if (isset($_POST['addto'])) {
-    // Assuming you have properly sanitized and validated $_POST data.
+$hasReloaded = false;
+if (isset($_POST['addto'])) {
+    
     $success = 0;
 
+    // Check if both the date and time are selected
     if (!empty($_POST['date1']) && !empty($_POST['times'])) {
         $time = $_POST['times'];
         $barber = $_POST['barbers'];
         $date_sel = $_POST['date1'];
-        $customer = $_SESSION['ID_u']; // Assuming you have the customer ID or fetch it appropriately.
+        $customer = $_SESSION['ID_u'];
 
         // Validate the selected date to ensure it's not in the past.
         $selected_date = strtotime($date_sel);
@@ -293,26 +325,20 @@ if (isset($_POST['choose_area'])) {
             $count = $check_row['count'];
 
             if ($count > 0) {
-                echo 'Sorry, this time slot is already taken.';
+                echo '<h6 color="black">Sorry, this time slot is already taken.';
             } else {
-                $add_query = "INSERT INTO history_of_queues (time, id_user, id_userW, date) VALUES ('$time', '$customer', '$barber', '$date_sel')";
-                $res = mysqli_query($con, $add_query);
+                
+                session_start();
+                $_SESSION['customer'] = $_SESSION['ID_u'];
+                $_SESSION['time'] = $_POST['times'];
+                $_SESSION['date'] = $_POST['date1'];
+                $_SESSION['barbers'] = $_POST['barbers'];
 
-                if ($res) {
-                    // Get the barber's name
-                    $barber_name = "";
-                    $barber_query = "SELECT name FROM Userss WHERE ID_u = $barber";
-                    $barber_result = mysqli_query($con, $barber_query);
-                    $barber_row = mysqli_fetch_assoc($barber_result);
-                    $barber_name = $barber_row["name"];
+                // Redirect to the "payforapointment.php" page to proceed with payment.
+                echo '<script>window.location.replace("payforapointment.php");</script>';
 
-                    // Assuming $iduser contains the user's email address.
-                    $useremail = $iduser;
-                    send_confirmation_email($useremail, $date_sel, $time, $barber_name);
-                    echo '<script>window.location.replace("appointments.php");</script>';
-                } else {
-                    echo 'Failed to insert the appointment.';
-                }
+                //  $iduser contains the user's email address.
+                $useremail = $iduser;
             }
         }
     } else {
@@ -320,14 +346,14 @@ if (isset($_POST['choose_area'])) {
     }
 }
 
-// Assuming you have a valid value for $branch to fetch the map URL.
+// value for $branch to fetch the map URL.
 $map = "SELECT map FROM branchs WHERE city ='$branch'";
-  $res_map = mysqli_query($con, $map);
-  $num_rows = mysqli_num_rows($res_map);
-  $row = mysqli_fetch_assoc($res_map);
-  
- 
-  echo ' <b class="text-dark" > Location on map : </b><br>';
-      $mapUrl = $row['map'];
-      echo " " . $mapUrl."<br>";  
+$res_map = mysqli_query($con, $map);
+$num_rows = mysqli_num_rows($res_map);
+$row = mysqli_fetch_assoc($res_map);
+
+// Display the map URL
+echo ' <b class="text-dark" > Location on map : </b><br>';
+$mapUrl = $row['map'];
+echo " " . $mapUrl . "<br>";
 ?>

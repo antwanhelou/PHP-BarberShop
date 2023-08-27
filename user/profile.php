@@ -55,6 +55,6 @@ $details = mysqli_fetch_array($result);
 <?php
 if (isset($_POST['update'])) {
     $_SESSION['update'] = $iduser;
-    echo '<script>window.open("updateprofile.php");</script>';
+    echo '<script>window.location.replace("updateprofile.php");</script>';
 }
 ?>

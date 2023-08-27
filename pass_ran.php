@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
       header('location:login.php');
 
 		if($pass_ra==$row['tempass']){
-       header('Location: http://localhost/labs/resetpass.php');
+       header('Location: http://localhost/labss2/resetpass.php');
   }
 }
 

@@ -24,7 +24,7 @@
 $hostname='localhost';
 $username='root';
 $password='';
-$database='Barbershopp';
+$database='barbershopp';
 error_reporting(0);
 $con=mysqli_connect($hostname,$username,$password,$database);
 
@@ -118,7 +118,7 @@ if (isset($_POST['login'])) {
                    $_SESSION['nameadmin']=$row2['name'];
 
                   $_SESSION['email']=$email;
-                  header('location:admin/home.php');
+                  header('location:admin/dashb/index.php');
 
               }
 

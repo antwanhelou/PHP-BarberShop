@@ -2,11 +2,24 @@
 include '../DBconnect.php';
 include 'index.php';
 
+
+// Execute an SQL query to get the total number of rows in the 'addcart' table and store it in the $data1 variable
 $resssult = mysqli_query($con, "SELECT count(*) as total from addcart");
 $data1 = mysqli_fetch_assoc($resssult);
+
+// Retrieve the 'ID_u' from the session and store it in the $id variable
 $id = $_SESSION['ID_u'];
-$result = mysqli_query($con, "SELECT addcart.*, products.image FROM addcart INNER JOIN products ON addcart.id_p = products.ID_p WHERE addcart.id_user = $id");
+
+// Execute an SQL query to retrieve data from the 'addcart' table and join it with the 'products' table
+// The result will include all records from 'addcart' table with additional 'image' field from 'products' table
+// The INNER JOIN is done using the condition 'addcart.id_p = products.ID_p' to match the related products
+// The condition 'addcart.id_user = $id' filters the results to get data only for the specific user's cart
+$result = mysqli_query($con, "SELECT addcart.*, products.image 
+                              FROM addcart 
+                              INNER JOIN products ON addcart.id_p = products.ID_p 
+                              WHERE addcart.id_user = $id");
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +142,10 @@ $result = mysqli_query($con, "SELECT addcart.*, products.image FROM addcart INNE
             ?>
 </div>
 <div class="total-container">
-    <p>Total: $<?php echo $total; ?></p>
+    <p>Total: $<?php echo $total;
+    session_start();
+    $_SESSION['total']=$total;
+    ?></p>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>

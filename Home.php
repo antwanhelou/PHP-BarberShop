@@ -23,7 +23,7 @@ p{
     <center>
     <p class="card-text">You can here find all the hair equipments</p>
     
-     <p class="card-text"> <input type="submit" name="shop" class="btn btn-dark" value="Shop Now!" /> </small></p>
+     <p class="card-text"> <input type="submit" name="shop" class="btn btn-white" value="Shop Now!" /> </small></p>
 
 </div>
 </div>

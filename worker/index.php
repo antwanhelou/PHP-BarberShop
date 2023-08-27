@@ -1,6 +1,5 @@
 <?php
 include '../DBconnect.php';
-
 session_start();
 ?>
 <!DOCTYPE html>
@@ -115,6 +114,7 @@ echo '
     <div class="container-fluid">
     <ul class="navbar-nav">
       <!-- Avatar -->
+     <a href="/labss2/user/Home.php"> <p style="font-size: 18px; padding-top: 8px; color:white;">Enter like user</p></a>
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle d-flex align-items-center"
@@ -179,6 +179,9 @@ echo '
             <li>
               <a class="dropdown-item" href="profile.php">My profile</a>
             </li>
+            <li>
+            <a class="dropdown-item" href="profile.php">Cancel apointment for all day</a>
+          </li>
             <li>
               <a class="dropdown-item" href="#">Settings</a>
             </li>

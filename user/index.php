@@ -1,6 +1,5 @@
 <?php
 include '../DBconnect.php';
-
 session_start();
 ?>
 <!DOCTYPE html>
@@ -53,7 +52,9 @@ if (!isset($_SESSION['email'])) {
 $iduser = $_SESSION['ID_u'];
 $sumcart = "SELECT SUM(quantity) AS sum FROM addcart WHERE id_user=$iduser";
 $sumres = mysqli_query($con, $sumcart);
-
+$select_role="SELECT ROLE FROM userss WHERE ID_u=$iduser";
+$res_select_role=mysqli_query($con,$select_role);
+$row_res_select_role=mysqli_fetch_assoc($res_select_role);
 while ($row2 = mysqli_fetch_assoc($sumres)) {
     if ($row2['sum'] == 0) {
         $sumincart = 0;
@@ -116,7 +117,12 @@ echo '
     <div class="d-flex align-items-center">
     <div class="container-fluid">
     <ul class="navbar-nav">
-      <!-- Avatar -->
+      <!-- Avatar -->';
+  
+      if ($row_res_select_role['ROLE'] === 'WORKER') {
+          echo '<a href="/labss2/worker/Home.php"><p style="font-size: 18px; padding-top: 8px; color:white; ">Enter like worker</p></a>';
+      }
+     echo '
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle d-flex align-items-center"
@@ -202,4 +208,4 @@ echo '
     '
     ?>
     </body>
-    </html>      
+    </html>

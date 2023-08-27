@@ -81,7 +81,7 @@ if (isset($_POST['choose_area'])) {
     user-select: none;
   }
 
-  .select {
+   .select {
     display: inline-block;
     padding: 10px;
     background-color: #f1f1f1;
@@ -229,12 +229,25 @@ if (isset($_POST['choose_area'])) {
     </tr>
     <div class="container mt-5">
     <div class="card-group">  
+      
       <?php 
           
       $apo = array_filter($checks);
     
       for($i=0;$i<7;$i++){  
+        $current_day = $weekOfdays[$i];
+        $is_canceled = false;
+        $check_cancel_query = "SELECT COUNT(*) AS count FROM history_of_canceled WHERE worker_id = '$selected_barber'
+         AND date = '$current_day'";
+        $check_cancel_result = mysqli_query($con, $check_cancel_query);
+        $check_cancel_row = mysqli_fetch_assoc($check_cancel_result);
+        $cancel_count = $check_cancel_row['count'];
+        if ($cancel_count > 0) {
+          $is_canceled = true;
+      }
+      if (!$is_canceled) {
       ?>
+      
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
@@ -253,11 +266,13 @@ if (isset($_POST['choose_area'])) {
                       $apo[$j]['time'] ,'<br>'; 
                   }
                 }  
+              
               ?> 
             </p>
           </div>
         </div>
       <?php 
+      }
       }
       ?> 
     </div>  
@@ -270,21 +285,21 @@ if (isset($_POST['choose_area'])) {
   
   $hasReloaded = false;
   if (isset($_POST['addto'])) {
-    // Assuming you have properly sanitized and validated $_POST data.
+  
     $success = 0;
 
     if (!empty($_POST['date1']) && !empty($_POST['times'])) {
         $time = $_POST['times'];
         $barber = $_POST['barbers'];
         $date_sel = $_POST['date1'];
-        $customer = $_SESSION['ID_u']; // Assuming you have the customer ID or fetch it appropriately.
+        $customer = $_SESSION['ID_u']; // customer ID or fetch it appropriately.
 
         // Validate the selected date to ensure it's not in the past.
         $selected_date = strtotime($date_sel);
         $current_date = time();
 
         if (date('Y-m-d', $selected_time) != date('Y-m-d', $selected_date_only)) {
-            echo 'Sorry, you cannot select a date in the past.';
+            echo '<script>alert("Sorry, you cannot select a date in the past.");</script>';
         } else {
             // Query to check if the selected time is available.
             $check_query = "SELECT COUNT(*) AS count FROM history_of_queues WHERE date = '$date_sel' AND time = '$time'";
@@ -293,7 +308,7 @@ if (isset($_POST['choose_area'])) {
             $count = $check_row['count'];
 
             if ($count > 0) {
-                echo '<h6 color="black">Sorry, this time slot is already taken.';
+              echo '<script>alert("Sorry, you cannot select a date in the past.");</script>';
             } else {
               session_start();
               $_SESSION['customer']=$_SESSION['ID_u'];
@@ -313,7 +328,7 @@ if (isset($_POST['choose_area'])) {
                   $_SESSION['barber_name']=$barber_name;
                   echo '<script>window.location.replace("payforapointment.php");</script>';
 
-                    // Assuming $iduser contains the user's email address.
+                    //  $iduser contains the user's email address.
                     $useremail = $iduser;
                    // send_confirmation_email($useremail, $date_sel, $time, $barber_name);
                   //  echo '<script>window.location.replace("appointments.php");</script>';
@@ -327,7 +342,7 @@ if (isset($_POST['choose_area'])) {
     }
 }
 
-// Assuming you have a valid value for $branch to fetch the map URL.
+// fetch the map URL.
 $map = "SELECT map FROM branchs WHERE city ='$branch'";
   $res_map = mysqli_query($con, $map);
   $num_rows = mysqli_num_rows($res_map);

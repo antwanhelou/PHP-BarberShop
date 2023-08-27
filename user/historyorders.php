@@ -36,7 +36,7 @@ $appointment_result = mysqli_query($con, $appointments);
     </style>
 <body>
     <div class="container mt-5">
-        <button class="btn btn-dark" onclick="clearHistory()">Clear History</button>
+        <button class="btn btn-danger" onclick="clearHistory()">Clear History</button>
         <table class="table table-striped table-responsive-sm">
             <thead class="thead-dark">
                 <tr class="bg-white">
@@ -53,7 +53,7 @@ $appointment_result = mysqli_query($con, $appointments);
                     <tr class="bg-white">
                     <td>' . $row['name'] . '</td>
                     <td>' . $row['quantity'] . '</td>
-                    <td>' . $row['price'] . '</td>
+                    <td>' . $row['price'] .'$'. '</td>
                     <td>' . $row['date_order'] . '</td>
                     </tr>';
                 }

@@ -14,16 +14,16 @@ p{
    
 }
 a:link { text-decoration: none; 
-color: white;}
+color: black;}
 
 
-a:visited { text-decoration: none; color: white;}
+a:visited { text-decoration: none; color: black;}
 
 
-a:hover { text-decoration: none; color: white;}
+a:hover { text-decoration: none; color: black;}
 
 
-a:active { text-decoration: none;color: white; }
+a:active { text-decoration: none;color: black; }
 
 
 
@@ -36,18 +36,15 @@ a:active { text-decoration: none;color: white; }
     <center>
     <p class="card-text">Here you can find your appointments</p>
     
-    <button class="btn btn-dark">   <a href="app.php" >My Appointments</a></button>
+    <button class="btn btn-white">   <a href="./app.php" >My Appointments</a></button>
     
 
 </div>
 </div>
 <div class="card bg-dark text-white">
-            <img src="./images/BARBER.jpg" height="350px" class="card-img" alt="...">
+            <img src="../images/BARBER.jpg" height="350px" class="card-img" alt="...">
             <div class="card-img-overlay text-center">
-
-          
-        </a>
-                </a>
+           
             </div>
         </div>
 </form>

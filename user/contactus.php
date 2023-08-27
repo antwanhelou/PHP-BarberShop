@@ -1,13 +1,20 @@
 <?php
 include 'index.php';
 session_start();
- 
-$iduser=$_SESSION['ID_u'];
-$details="SELECT * FROM userss WHERE ID_u=$iduser";
-$res=mysqli_query($con,$details);
-$row=mysqli_fetch_assoc($res);
 
+// Retrieve the 'ID_u' from the session and store it in the $iduser variable
+$iduser = $_SESSION['ID_u'];
+
+// Construct the SQL query to select all data from the 'userss' table where 'ID_u' matches the user's ID
+$details = "SELECT * FROM userss WHERE ID_u=$iduser ";
+
+// Execute the SQL query using the mysqli_query function with the database connection ($con) and store the result in $res
+$res = mysqli_query($con, $details);
+
+// Fetch a single row of data from the query result and store it in the $row variable as an associative array
+$row = mysqli_fetch_assoc($res);
 ?>
+
  <style>
        
         .main{
@@ -39,7 +46,7 @@ $row=mysqli_fetch_assoc($res);
   <div class="form-group form-check">
   </div>
   <p>
-  <button type="submit"  name="send" class="btn btn-warning">Send</button>
+  <button type="submit"  name="send" class="btn btn-dark">Send</button>
   
 
 </form>
@@ -50,19 +57,36 @@ $row=mysqli_fetch_assoc($res);
 
 include 'DBconnect.php';
 
-$name=$_POST['name'];
-$email=$_POST['email'];
- 
-$message=$_POST['message'];
-if($message!=""){
-$insertTo_contactus="INSERT INTO contactus (name,email,message) VALUES ('$name','$email','$message')";
-$result=mysqli_query($con,$insertTo_contactus);
+// Retrieve the data sent via POST method and store them in respective variables
+$name = $_POST['name'];
+$email = $_POST['email'];
+$message = $_POST['message'];
 
-    echo '<div class="alert alert-success" role="alert">
-   Thank You For Contact Us!
-  </div>';
- 
+// Check if the 'message' field is not empty (if the user submitted a message)
+if ($message != "") {
+    // Construct the SQL query to insert the user's contact information into the 'contactus' table
+    $insertTo_contactus = "INSERT INTO contactus (name, email, message) VALUES ('$name', '$email', '$message')";
+
+    // Execute the SQL query using the mysqli_query function with the database connection ($con) and store the result in $result
+    $result = mysqli_query($con, $insertTo_contactus);
+
+    // Check if the query was executed successfully
+    if ($result) {
+        // If the query was successful, display a success message to the user
+        echo '<div class="alert alert-success" role="alert">
+                Thank You For Contacting Us!
+              </div>';
+    } else {
+        // If there was an error during the query execution, display an error message to the user
+        echo '<div class="alert alert-danger" role="alert">
+                Error: Unable to process your request. Please try again later.
+              </div>';
+    }
 }
+
+
+ 
+
 
 
 ?>

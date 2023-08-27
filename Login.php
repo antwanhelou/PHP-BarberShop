@@ -86,7 +86,7 @@ if(!empty( $_POST['email'])&&!empty($_POST['password'])){
 				$to =$_SESSION['email'] ;
 				$subject = 'New password';
 			 	$message = "Hello  your new password is: \n" .$_SESSION['randpassword'].
-				"\nLogin: http://localhost/labs/pass_ran.php";
+				"\nLogin: http://localhost/labss2/pass_ran.php";
 				$headers = "From: helou527@gmail.com";
 				$mail_sent = mail($to, $subject, $message, $headers);
 				if($mail_sent == true){

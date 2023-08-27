@@ -1,16 +1,27 @@
-<?php include 'index.php';
+<?php
+// Include necessary files
+include 'index.php';
 include '../DBconnect.php';
+
+// Define the number of products to display per page and get the current page number from the URL
 $productsPerPage = 8;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+// Calculate the offset based on the current page number to determine which products to fetch from the database
 $offset = ($page > 1) ? ($page - 1) * $productsPerPage : 0;
 
+// Construct the SQL query to fetch products from the database, limiting the number of products per page and setting the offset
 $sql = "SELECT * FROM products ORDER BY category LIMIT $productsPerPage OFFSET $offset";
 $result = mysqli_query($con, $sql);
 
+// Calculate the total number of products in the database
 $totalProducts = mysqli_query($con, "SELECT COUNT(*) FROM products");
 $totalProducts = mysqli_fetch_array($totalProducts)[0];
+
+// Calculate the total number of pages based on the total number of products and products per page
 $totalPages = ceil($totalProducts / $productsPerPage);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,8 +99,20 @@ $_SESSION['cn']=$data1['total'];
 
 while($row=mysqli_fetch_assoc($result)){
   if($row['quantity']==0){
-    $row['image'] = "./images/soldout.webp";
-  }
+  
+    echo'
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 bg-dark">
+        <img src="../images/soldout.webp" class="card-img-top" width="200px" height="200px" alt="...">
+        <div class="card-body d-flex flex-column text-white">
+          <h5 class="card-title">'. $row['name'] .'</h5>
+    
+        
+        </div>
+      </div>
+    </div>
+    ';
+  }else{
  echo'
 <div class="col-md-3 mb-4">
   <div class="card h-100 bg-dark">
@@ -103,6 +126,7 @@ while($row=mysqli_fetch_assoc($result)){
   </div>
 </div>
 ';
+  }
 }
 $iduser=$_SESSION['ID_u'];
 $resssult=mysqli_query($con,"SELECT count(*) as total from addcart WHERE id_user=$iduser  ");
@@ -131,7 +155,7 @@ $_SESSION['cn']=$data1['total'];
         const productId = icon.getAttribute('data-product-id');
         icon.classList.add('clicked');
 
-        // Add product to cart (replace with your actual AJAX request)
+        // Add product to cart 
         setTimeout(() => {
           addToCart(productId);
           icon.classList.remove('clicked');
